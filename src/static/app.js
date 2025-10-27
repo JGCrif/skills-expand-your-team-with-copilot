@@ -472,12 +472,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Constants for social sharing
+  const SHARE_POPUP_DIMENSIONS = 'width=600,height=400';
+
+  // Helper function to get share URL for an activity
+  function getShareUrl(activityName) {
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}#${encodeURIComponent(activityName)}`;
+  }
+
+  // Helper function to get share text for an activity
+  function getShareText(activityName, description) {
+    return `Check out ${activityName} at Mergington High School! ${description}`;
+  }
+
   // Function to create share buttons for an activity
   function createShareButtons(activityName, description, schedule) {
-    const baseUrl = window.location.origin + window.location.pathname;
-    const shareText = `Check out ${activityName} at Mergington High School! ${description}`;
-    const shareUrl = `${baseUrl}#${encodeURIComponent(activityName)}`;
-    
     return `
       <div class="share-container">
         <span class="share-label">Share:</span>
@@ -501,26 +511,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to handle social sharing
   function handleShare(platform, activityName, description, schedule) {
-    const baseUrl = window.location.origin + window.location.pathname;
-    const shareText = `Check out ${activityName} at Mergington High School! ${description}`;
-    const shareUrl = `${baseUrl}#${encodeURIComponent(activityName)}`;
+    const shareUrl = getShareUrl(activityName);
+    const shareText = getShareText(activityName, description);
     
     let url = '';
     
     switch(platform) {
       case 'facebook':
         url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-        window.open(url, '_blank', 'width=600,height=400');
+        window.open(url, '_blank', SHARE_POPUP_DIMENSIONS);
         break;
       
       case 'twitter':
         url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
-        window.open(url, '_blank', 'width=600,height=400');
+        window.open(url, '_blank', SHARE_POPUP_DIMENSIONS);
         break;
       
       case 'linkedin':
         url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
-        window.open(url, '_blank', 'width=600,height=400');
+        window.open(url, '_blank', SHARE_POPUP_DIMENSIONS);
         break;
       
       case 'email':
